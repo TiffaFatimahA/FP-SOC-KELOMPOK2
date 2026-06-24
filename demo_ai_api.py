@@ -2,9 +2,12 @@ import paramiko
 import json
 import time
 
-host = '20.204.12.205'
-username = 'admin_soc'
-password = 'ProyekSoc2026!'
+# ============================================================
+# KONFIGURASI - Ganti dengan kredensial server Anda
+# ============================================================
+host = 'YOUR_WAZUH_MANAGER_IP'
+username = 'YOUR_SSH_USERNAME'
+password = 'YOUR_SSH_PASSWORD'
 
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
