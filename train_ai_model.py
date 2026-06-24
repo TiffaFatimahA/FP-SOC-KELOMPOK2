@@ -32,6 +32,13 @@ attack_patterns = [
     "brute force",
     "Multiple failed logins",
     "missed the password more than one time",
+    # DDoS patterns
+    "SYN flood",
+    "DDoS",
+    "flooding",
+    "connection flood",
+    "Possible SYN flood",
+    "high amount of connections",
 ]
 
 # Daftar pola deskripsi yang merupakan OPERASIONAL NORMAL (bukan serangan)
@@ -108,7 +115,12 @@ print("\nDetail Laporan (Precision, Recall, F1-Score):")
 print(classification_report(y_test, y_pred, target_names=["Normal/False Positive", "Serangan/True Positive"]))
 
 # --- 6. MENYIMPAN MODEL ---
-joblib.dump(model, 'ai_soc_model.pkl')
+# Latih ulang dengan SEMUA data agar model melihat 100% pola serangan
+print("\nMelatih ulang model final dengan seluruh data...")
+final_model = RandomForestClassifier(n_estimators=100, random_state=42)
+final_model.fit(X_vektor, y)
+
+joblib.dump(final_model, 'ai_soc_model.pkl')
 joblib.dump(vectorizer, 'vectorizer.pkl')
 
 print("Model berhasil disimpan sebagai 'ai_soc_model.pkl' dan 'vectorizer.pkl'")

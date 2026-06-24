@@ -2,12 +2,9 @@ import paramiko
 import json
 import time
 
-# ============================================================
-# KONFIGURASI - Ganti dengan kredensial server Anda
-# ============================================================
-host = 'YOUR_WAZUH_MANAGER_IP'
-username = 'YOUR_SSH_USERNAME'
-password = 'YOUR_SSH_PASSWORD'
+host = '20.204.12.205'
+username = 'admin_soc'
+password = 'ProyekSoc2026!'
 
 client = paramiko.SSHClient()
 client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -46,6 +43,12 @@ test_cases = [
         "title": "Log Login Gagal Berulang (SERANGAN NYATA!)",
         "desc":  "Terdeteksi banyak percobaan login gagal dalam waktu singkat.",
         "log":   {"rule": {"description": "PAM: Multiple failed logins in a small period of time."}},
+        "expected": "True Positive (Serangan Nyata)"
+    },
+    {
+        "title": "Log DDoS / SYN Flood (SERANGAN NYATA!)",
+        "desc":  "Terdeteksi serangan DDoS berupa ribuan paket SYN membanjiri server.",
+        "log":   {"rule": {"description": "Possible SYN flood attack. High amount of connections to destination port."}},
         "expected": "True Positive (Serangan Nyata)"
     },
 ]
