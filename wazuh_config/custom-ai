@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+import sys, json, requests
+
+def main():
+    try:
+        alert_file = sys.argv[1]
+        with open(alert_file, 'r') as f:
+            alert = json.load(f)
+        
+        resp = requests.post("http://127.0.0.1:5000/cek_log", json=alert, timeout=3)
+        result = resp.json()
+        
+        if result.get("status") == "True Positive":
+            srcip = alert.get("data", {}).get("srcip", "")
+            if not srcip:
+                srcip = alert.get("data", {}).get("srcip", "127.0.0.1")
+                
+            desc = alert.get("rule", {}).get("description", "")
+            log_entry = f"WAZUH_AI_ALERT: True Positive. IP: {srcip} DESC: {desc}\n"
+            
+            with open("/var/log/ai_alerts.log", "a") as f:
+                f.write(log_entry)
+    except Exception as e:
+        pass
+
+if __name__ == "__main__":
+    main()
